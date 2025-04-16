@@ -9,7 +9,7 @@ namespace MyApp
     internal class User
     {
     //User usd = new User() { };
-        public static User us;
+        //public static User us;
         public int Id { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
@@ -22,5 +22,13 @@ namespace MyApp
             Password = password;
         }
 
+    }
+
+    public class IPost
+    {
+        public int Id { get; set; }
+        public string Description { get; set; } = "";
+        public string Body { get; set; }
+        public int UserId { get; set; }
     }
 }

@@ -5,25 +5,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyApp.Windows"
         mc:Ignorable="d"
-        Title="SecondWindow" Height="450" Width="800">
+        Title="SecondWindow" Height="650" Width="800">
     <Grid>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid>
+        <Grid Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" x:Name="id"/>
-        <TextBlock Grid.Row="1" x:Name="login"/>
-        <Separator Grid.Row="2"/>
-        <TextBlock Grid.Row="3" x:Name="DescriptionInput"/>
-        <TextBlock Grid.Row="4" x:Name="BodyInput"/>
+            <TextBlock Grid.Row="0" x:Name="id"/>
+            <TextBlock Grid.Row="1" x:Name="login"/>
+            <Separator Grid.Row="2"/>
+            <TextBox Grid.Row="3" x:Name="DescriptionInput"/>
+            <TextBox Grid.Row="4" x:Name="BodyInput"/>
+            <Button Grid.Row="5" x:Name="CreatePostButton" Content="Добавить" Click="CreatePostButton_Click"/>
         </Grid>
+        
+        <ScrollViewer Grid.Row="1">
+            <ItemsControl x:Name="postsView"  >
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Aqua" BorderThickness="1" Padding="10 5" Margin="5 10" Cursor="Hand">
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{Binding Id}"/>
+                                    <TextBlock Text="{Binding Description}"/>
+                                    <TextBlock Text="{Binding Body}"/>
+                                </StackPanel>
+                                <Button Content="Изменить" Click="UpdatePost_Click"/>
+                                <Button Content="Удалить" Click="Delete_Click" Tag="{Binding Id}"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </Window>

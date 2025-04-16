@@ -13,13 +13,14 @@ using MyApp.Pages;
 namespace MyApp
 
 {
-    internal class IUser
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Password { get; set; }
+    //internal class IUser
+    //{
+    //    public int Id { get; set; }
+    //    public string Name { get; set; }
+    //    public string Password { get; set; }
 
-    }
+    //}
+    
     internal class SQLiteDB
     {
 
@@ -31,8 +32,8 @@ namespace MyApp
         }
         internal void CreateTableUsers()
         {
-            //if (!File.Exists(path))
-            //{
+            if (!File.Exists(path))
+            {
                 SQLiteConnection.CreateFile(path);
 
             using (SQLiteConnection conn = HelperSQL())
@@ -59,7 +60,7 @@ namespace MyApp
                     cmd.ExecuteNonQuery();
                 }
             }
-            //}
+            }
         }
 
         internal bool Registration(string login, string password)
@@ -97,45 +98,6 @@ namespace MyApp
                 return false;
             }
         }
-
-
-        //internal bool Avtoriz(string login, string password)
-        //{
-        //    string hashedInputPassword = HashPassword(password);
-
-        //    using (SQLiteConnection conn = HelperSQL())
-        //    {
-        //        conn.Open();
-        //        string sql = "SELECT * FROM Users WHERE Login = @Login AND Password = @Password";
-
-        //        using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
-        //        {
-        //            cmd.Parameters.AddWithValue("@Login", login);
-        //            cmd.Parameters.AddWithValue("@Password", hashedInputPassword);
-
-        //            using (SQLiteDataReader reader = cmd.ExecuteReader())
-        //            {
-        //                if (reader.Read())
-        //                {
-        //                    // Собираем все данные пользователя в строку
-        //                    string userData = "";
-        //                    for (int i = 0; i < reader.FieldCount; i++)
-        //                    {
-        //                        userData += $"{reader.GetName(i)}: {reader[i]}\n";
-        //                    }
-        //                    User.us = new User(34, "fg", "fdgh") { Id=45, Login="gh", Password="fdg"};
-        //                    MessageBox.Show("Данные пользователя:\n" + userData);
-        //                    return true;
-        //                }
-        //                else
-        //                {
-        //                    MessageBox.Show("Пользователь не найден");
-        //                    return false;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
 
         internal bool Avtoriz(string login, string password)
         {
@@ -175,6 +137,80 @@ namespace MyApp
             return false;
         }
 
+        internal void CreatePost(string description, string body, int userId)
+        {
+            using (SQLiteConnection conn = HelperSQL())
+            {
+                conn.Open();
+                string sql = "INSERT INTO Posts (Description, Body, UserId) VALUES (@Description, @Body, @UserId)";
+                using(SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Description", description);
+                    cmd.Parameters.AddWithValue("@Body", body);
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        internal List<IPost> GetPosts(int id)
+        {
+            using (SQLiteConnection conn = HelperSQL())
+            {
+                conn.Open();
+                string sql = "SELECT * FROM Posts WHERE UserId = @Id";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", id);
+
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        List<IPost> posts = new List<IPost>();
+                        while (reader.Read()) 
+                        {
+                            posts.Add(new IPost
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Description = Convert.ToString(reader["Description"]),
+                                Body = Convert.ToString(reader["body"]),
+                                UserId = Convert.ToInt32(reader["userId"])
+                            });
+                        }
+                        return posts;
+                    }
+                }
+            }
+        }
+
+        internal void DeletePost(int id)
+        {
+            using (SQLiteConnection conn = HelperSQL())
+            {
+                conn.Open();
+                string sql = "DELETE FROM Posts WHERE Id = @Id";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        internal void UpdatePost(int id, string description, string body)
+        {
+            using(SQLiteConnection conn = HelperSQL())
+            {
+                conn.Open();
+                string sql = "UPDATE Posts SET Description=@Description, Body = @Body WHERE Id = @Id";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.Parameters.AddWithValue("@Description", description);
+                    cmd.Parameters.AddWithValue("@Body", body);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         private string HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())

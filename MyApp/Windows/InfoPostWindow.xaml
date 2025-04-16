@@ -1,0 +1,17 @@
+﻿<Window x:Class="MyApp.Windows.InfoPostWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyApp.Windows"
+        mc:Ignorable="d"
+        Title="InfoPostWindow" Height="450" Width="800">
+    <Grid>
+        <StackPanel Height="200">
+            <TextBox Grid.Row="0" Text="{Binding Id}" x:Name="idInput"/>
+            <TextBox Grid.Row="1" Text="{Binding Description}" x:Name="descriptionInput"/>
+            <TextBox Grid.Row="2" Text="{Binding Body}" x:Name="bodyInput"/>
+            <Button Content="Изменить" Width="80" HorizontalAlignment="Left" Margin="20 0 0 0" Click="Button_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
