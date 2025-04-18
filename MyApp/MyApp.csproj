@@ -83,6 +83,9 @@
     <Compile Include="Windows\InfoPostWindow.xaml.cs">
       <DependentUpon>InfoPostWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\MvvmWindow.xaml.cs">
+      <DependentUpon>MvvmWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SecondWindow.xaml.cs">
       <DependentUpon>SecondWindow.xaml</DependentUpon>
     </Compile>
@@ -107,6 +110,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\InfoPostWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MvvmWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

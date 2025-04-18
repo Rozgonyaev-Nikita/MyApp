@@ -37,5 +37,7 @@ namespace MyApp.Windows
             string body = bodyInput.Text;
             db.UpdatePost(id, description, body);
         }
+
+        
     }
 }

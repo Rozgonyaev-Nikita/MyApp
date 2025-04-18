@@ -28,9 +28,21 @@
             <TextBox Grid.Row="4" x:Name="BodyInput"/>
             <Button Grid.Row="5" x:Name="CreatePostButton" Content="Добавить" Click="CreatePostButton_Click"/>
         </Grid>
-        
-        <ScrollViewer Grid.Row="1">
-            <ItemsControl x:Name="postsView"  >
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel>
+                <RadioButton GroupName="sortGroup" Content="По возрастанию" IsChecked="True" Checked="RadioButton_Checked"/>
+                <RadioButton GroupName="sortGroup" Content="По убыванию" Checked="RadioButton_Checked"/>
+                <Button Content="Перейти" Click="Button_Click_1" />
+                </StackPanel>
+                <TextBox x:Name="filterInput" Width="150" TextChanged="filterInput_TextChanged"/>
+            </StackPanel>
+            <ScrollViewer Grid.Row="1">
+            <ItemsControl x:Name="postsView">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="Aqua" BorderThickness="1" Padding="10 5" Margin="5 10" Cursor="Hand">
@@ -48,5 +60,6 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
+        </Grid>
     </Grid>
 </Window>

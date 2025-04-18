@@ -20,6 +20,8 @@ namespace MyApp.Windows
     public partial class SecondWindow : Window
     {
         SQLiteDB db;
+
+        string sort = "По возрастанию";
         public SecondWindow()
         {
             InitializeComponent();
@@ -50,7 +52,21 @@ namespace MyApp.Windows
         
         private void ShowPosts()
         {
-            postsView.ItemsSource = db.GetPosts(CurrentUser.Id);
+            var posts = db.GetPosts(CurrentUser.Id);
+            var filterPosts = posts.Where(post => post.Description.Contains(filterInput.Text)).ToList();
+            if (sort == "По возрастанию") 
+            {
+                filterPosts.Sort((a, b) => a.Id - b.Id);
+            } else if(sort == "По убыванию")
+            {
+                filterPosts.Sort((a, b) => b.Id - a.Id);
+            }
+            else
+            {
+                MessageBox.Show("С сортировкой не так!");
+            }
+
+                postsView.ItemsSource = filterPosts;
         }
 
         private void UpdatePost_Click(object sender, RoutedEventArgs e)
@@ -77,6 +93,36 @@ namespace MyApp.Windows
 
             db.DeletePost(value);
             ShowPosts();
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+
+            if (db != null)
+            {
+                
+                //MessageBox.Show("karp");
+                if (sender is RadioButton radioButton && radioButton.IsChecked == true)
+                {
+                    sort = radioButton.Content.ToString();
+                    //MessageBox.Show(sort);
+                    ShowPosts();
+                }
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            MvvmWindow mvvm = new MvvmWindow();
+            mvvm.Show();
+        }
+
+        private void filterInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (db != null)
+            {
+                ShowPosts();
+            }
         }
     }
 }
